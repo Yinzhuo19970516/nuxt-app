@@ -42,5 +42,7 @@ export default defineNuxtConfig({
             'composables/**'
         ]
     },
-
+    nitro: {
+        preset: 'vercel'
+    }
 });
