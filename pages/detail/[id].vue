@@ -22,8 +22,21 @@
 import { NuxtError } from '#app'
 // 获取文章id
 const route = useRoute()
+const router = useRouter()
+const store = useUser()
 // const { title, content } = await $fetch(`/api/detail/${route.params.id}`)
-const fetchPost = () => $fetch(`/api/detail/${route.params.id}`)
+const fetchPost = () =>
+    $fetch(`/api/detail/${route.params.id}`, {
+      // 如果已登录，请求时携带令牌
+      headers: store.isLogin ? { token: "abc" } : {},
+      onResponseError: ({ response }) => {
+        // 如果响应 401 错误，重新登录
+        console.log(response)
+        if (response.status === 401) {
+          router.push("/login?callback=" + route.path);
+        }
+      },
+    });
 const { data, pending, error } = await useAsyncData(fetchPost)
 const errorMsg = computed(() => error.value as NuxtError)
 watchEffect(() => {
@@ -41,9 +54,9 @@ watchEffect(() => {
 
 // 增加评论相关逻辑，注意登录状态的获取和使用
 const value = useState("comment", () => "");
-const store = useUser()
+
 const { isLogin } = storeToRefs(store)
-const router = useRouter()
+
 const onSubmit = () => {
   if (isLogin.value) {
     // 提交留言...
@@ -53,6 +66,9 @@ const onSubmit = () => {
     router.push('/login?callback=' + route.path)
   }
 }
+// definePageMeta({
+//   middleware: ['auth']
+// })
 
 </script>
 <style scoped lang="scss">
