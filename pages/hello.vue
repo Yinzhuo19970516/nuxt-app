@@ -1,9 +1,9 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <div>
-    {{ message }}
-  </div>
+  <div />
 </template>
 
-<script setup lang="ts">
-const { message } = await $fetch('/api/hello')
-</script>
+<style scoped>
+</style>
