@@ -1,8 +1,18 @@
 <template>
   <div>
-    <h1 class="bg-blue-200">
-      this is a nuxt3 starter!
-    </h1>
-    <NuxtPage />
+    <NDialogProvider>
+      <NMessageProvider>
+        <NuxtLayout>
+          <NuxtPage />
+        </NuxtLayout>
+      </NMessageProvider>
+    </NDialogProvider>
   </div>
 </template>
+
+<style>
+a {
+  color: white;
+  text-decoration: none;
+}
+</style>
